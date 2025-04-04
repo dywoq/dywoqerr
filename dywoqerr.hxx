@@ -5,7 +5,7 @@ namespace dywoq {
 
 struct errnull_t final {};
 
-class error final {
+class error {
 private:
   const char* __reason;
 
@@ -15,8 +15,13 @@ public:
 };
 
 template <typename T>
-class result final {
+class result_wrapper final {
 private:
+  T __value;
+
+public:
+  constexpr result_wrapper(const T& __value) : __value(__value) {}
+  [[nodiscard]] constexpr auto operator*() -> T { return __value; }
 };
 
 } // namespace dywoq
