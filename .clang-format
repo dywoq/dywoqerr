@@ -25,4 +25,4 @@ Standard: Latest
 AlwaysBreakTemplateDeclarations: true
 PointerAlignment: Left
 IndentPPDirectives: AfterHash
-ColumnLimit: 100
+ColumnLimit: 116
