@@ -1,8 +1,6 @@
 #ifndef _DYWOQERR_HXX
 #define _DYWOQERR_HXX
 
-#include <array>
-#include <initializer_list>
 #include <tuple>
 #include <variant>
 
@@ -28,6 +26,7 @@ public:
   constexpr result_wrapper(const T& value) : __value(value) {}
   constexpr result_wrapper(T&& value) : __value(static_cast<T&&>(value)) {}
   [[nodiscard]] constexpr auto operator*() const noexcept -> const T& { return __value; }
+  [[nodiscard]] constexpr auto get() const noexcept -> const T& { return __value; }
 };
 
 class error_wrapper final {
@@ -36,13 +35,14 @@ private:
   __err_type __err;
 
 public:
-  constexpr error_wrapper(const errnull_t& __err) : __err(__err) {}
+  constexpr error_wrapper(const errnull_t& e) : __err(e) {}
   constexpr error_wrapper(const char* reason) : __err(error(reason)) {}
   [[nodiscard]] constexpr auto operator*() const noexcept -> const __err_type& { return __err; }
+  [[nodiscard]] constexpr auto get() const noexcept -> const __err_type& { return __err; }
 };
 
-template <typename T>
-using result = std::tuple<result_wrapper<T>, error_wrapper>;
+template <typename... Ts>
+using result = std::tuple<result_wrapper<Ts>..., error_wrapper>;
 
 } // namespace dywoq
 
